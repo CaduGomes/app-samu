@@ -1,0 +1,12 @@
+{
+  "name": "app-samu",
+  "displayName": "app-samu",
+  "expo": {
+    "name": "app-samu",
+    "slug": "app-samu",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
