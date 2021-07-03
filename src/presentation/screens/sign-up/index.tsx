@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Text, View, Button } from "react-native";
+import {
+  Text,
+  View,
+  Button,
+  NativeSyntheticEvent,
+  TextInputSubmitEditingEventData,
+} from "react-native";
 import { cpf as CPFvalidator } from "cpf-cnpj-validator";
 
 import { Field, Formik } from "formik";
@@ -7,7 +13,8 @@ import * as yup from "yup";
 
 import styles from "./styles";
 import { CustomTextInput, ErrorMessage } from "@presentation/components";
-import { Authentication } from "@domain/usecases";
+import { Authentication } from "@domain/repositories";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 const fieldValidationSchema = yup.object().shape({
   name: yup
@@ -70,6 +77,9 @@ const SignUpScreen: React.FC<Props> = ({ useAuthentication }) => {
   const cpfRef = React.createRef<HTMLInputElement>();
   const phoneRef = React.createRef<HTMLInputElement>();
   const passwordRef = React.createRef<HTMLInputElement>();
+  const submitButtonRef = React.createRef<HTMLInputElement>();
+
+  console.log(passwordRef.current?.value);
 
   return (
     <View style={styles.container}>
@@ -91,58 +101,60 @@ const SignUpScreen: React.FC<Props> = ({ useAuthentication }) => {
           }, [values]);
           return (
             <View style={styles.formContainer}>
-              <Field
-                name="name"
-                component={CustomTextInput}
-                label="Nome"
-                forwardRef={nameRef}
-                onSubmitEditing={() => emailRef.current?.focus()}
-              />
-
-              <Field
-                name="email"
-                component={CustomTextInput}
-                label="Email"
-                forwardRef={emailRef}
-                onSubmitEditing={() => cpfRef.current?.focus()}
-              />
-
-              <Field
-                name="cpf"
-                component={CustomTextInput}
-                label="CPF"
-                keyboardType="numeric"
-                mask="999.999.999-99"
-                forwardRef={cpfRef}
-                onSubmitEditing={() => phoneRef.current?.focus()}
-              />
-
-              <Field
-                name="phone"
-                component={CustomTextInput}
-                label="Celular"
-                mask="(99) 9 9999-9999"
-                keyboardType="numeric"
-                forwardRef={phoneRef}
-                onSubmitEditing={() => passwordRef.current?.focus()}
-              />
-
-              <Field
-                name="password"
-                component={CustomTextInput}
-                label="Senha"
-                isPassword={true}
-                forwardRef={passwordRef}
-              />
-
-              <View style={styles.buttonContainer}>
-                <ErrorMessage show={!!signUpError} text={signUpError ?? ""} />
-                <Button
-                  title="Cadastrar"
-                  onPress={() => handleSubmit()}
-                  disabled={!isValid || isSubmitting}
+              <KeyboardAwareScrollView>
+                <Field
+                  name="name"
+                  component={CustomTextInput}
+                  label="Nome"
+                  forwardRef={nameRef}
+                  onSubmitEditing={() => emailRef.current?.focus()}
                 />
-              </View>
+
+                <Field
+                  name="email"
+                  component={CustomTextInput}
+                  label="Email"
+                  forwardRef={emailRef}
+                  onSubmitEditing={() => cpfRef.current?.focus()}
+                />
+
+                <Field
+                  name="cpf"
+                  component={CustomTextInput}
+                  label="CPF"
+                  keyboardType="numeric"
+                  mask="999.999.999-99"
+                  forwardRef={cpfRef}
+                  onSubmitEditing={() => phoneRef.current?.focus()}
+                />
+
+                <Field
+                  name="phone"
+                  component={CustomTextInput}
+                  label="Celular"
+                  mask="(99) 9 9999-9999"
+                  keyboardType="numeric"
+                  forwardRef={phoneRef}
+                  onSubmitEditing={() => passwordRef.current?.focus()}
+                />
+
+                <Field
+                  name="password"
+                  component={CustomTextInput}
+                  label="Senha"
+                  isPassword={true}
+                  forwardRef={passwordRef}
+                  onSubmitEditing={() => passwordRef.current?.blur()}
+                />
+                <View style={styles.buttonContainer}>
+                  <ErrorMessage show={!!signUpError} text={signUpError ?? ""} />
+                  <Button
+                    title="Cadastrar"
+                    onPress={() => handleSubmit()}
+                    disabled={!isValid || isSubmitting}
+                  />
+                </View>
+              </KeyboardAwareScrollView>
             </View>
           );
         }}

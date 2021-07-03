@@ -1,26 +1,26 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-import { HomeScreen } from "@presentation/screens";
-import MakeAmbulanceRequestScreen from "@main/factories/screens/ambulance-request-screen-factory";
+import { BottomTabNavigator } from "./bottom-tab-navigator";
+import { AmbulanceRequestNavigator } from "./ambulance-request-navigator";
 
-export type MainNavigatorParamList = {
+export type RootNavigatorParamList = {
   Home: undefined;
   AmbulanceRequest: undefined;
 };
 
-const Stack = createStackNavigator<MainNavigatorParamList>();
+const Stack = createStackNavigator<RootNavigatorParamList>();
 
-export default function MainNavigator() {
+export function RootNavigator() {
   return (
     <Stack.Navigator initialRouteName="Home">
       <Stack.Screen
         name="Home"
-        component={HomeScreen}
+        component={BottomTabNavigator}
         options={{ headerShown: false }}
       />
       <Stack.Screen
         name="AmbulanceRequest"
-        component={MakeAmbulanceRequestScreen}
+        component={AmbulanceRequestNavigator}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>

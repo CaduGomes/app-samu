@@ -1,12 +1,13 @@
-import { AmbulanceRequest } from "@domain/usecases";
+import { MessageModel } from "@domain/models";
+import { AmbulanceRequestRepository } from "@domain/repositories";
 import firestore, {
   FirebaseFirestoreTypes,
 } from "@react-native-firebase/firestore";
 
 import storage from "@react-native-firebase/storage";
-// import { InvalidCredentialsError, UnexpectedError } from "@domain/errors";
+import * as Notifications from "expo-notifications";
 
-export class RemoteAmbulanceRequest implements AmbulanceRequest {
+export class RemoteAmbulanceRequest implements AmbulanceRequestRepository {
   constructor(private readonly collection: string) {}
 
   async create(): Promise<FirebaseFirestoreTypes.DocumentReference> {
@@ -15,7 +16,39 @@ export class RemoteAmbulanceRequest implements AmbulanceRequest {
       createAt: firestore.Timestamp.now(),
       isOpen: true,
       images: [],
+      videos: [],
+      location: new firestore.GeoPoint(0, 0),
     });
+
+    firestore()
+      .collection<MessageModel>("AmbulanceRequest")
+      .doc(doc.id)
+      .collection("messages")
+      .orderBy("createdAt", "desc")
+      .onSnapshot(
+        async (docs) => {
+          const msgs: MessageModel[] = [];
+          docs.docs.forEach((doc) => {
+            msgs.push({
+              id: doc.id,
+              createdAt: doc.data()["createdAt"],
+              direction: doc.data()["direction"],
+              text: doc.data()["text"],
+            });
+          });
+          if (msgs[0] && msgs[0].direction === "admin") {
+            await Notifications.scheduleNotificationAsync({
+              content: {
+                title: "Nossa mensagem",
+                body: msgs[0].text,
+              },
+              trigger: { seconds: 2 },
+            });
+          }
+        },
+        (err) => console.log(err)
+      );
+
     return doc;
   }
 
@@ -23,7 +56,7 @@ export class RemoteAmbulanceRequest implements AmbulanceRequest {
     docId,
     imageName,
     imageURI,
-  }: AmbulanceRequest.AddImage): Promise<string> {
+  }: AmbulanceRequestRepository.AddImage): Promise<string> {
     const reference = await storage().ref("/images/" + imageName);
 
     await reference.putFile(imageURI);
@@ -45,7 +78,7 @@ export class RemoteAmbulanceRequest implements AmbulanceRequest {
     docId,
     imageName,
     imageURL,
-  }: AmbulanceRequest.DeleteImage): Promise<void> {
+  }: AmbulanceRequestRepository.DeleteImage): Promise<void> {
     await firestore()
       .collection(this.collection)
       .doc(docId)
@@ -64,13 +97,55 @@ export class RemoteAmbulanceRequest implements AmbulanceRequest {
   async updateLocation({
     docId,
     location,
-  }: AmbulanceRequest.UpdateLocation): Promise<void> {
+  }: AmbulanceRequestRepository.UpdateLocation): Promise<void> {
     await firestore().collection(this.collection).doc(docId).update({
       location,
     });
   }
+
+  async addVideo({
+    docId,
+    videoName,
+    videoURI,
+  }: AmbulanceRequestRepository.AddVideo): Promise<string> {
+    const reference = await storage().ref("/videos/" + videoName);
+
+    await reference.putFile(videoURI);
+
+    await firestore()
+      .collection(this.collection)
+      .doc(docId)
+      .update({
+        videos: firestore.FieldValue.arrayUnion({
+          url: await reference.getDownloadURL(),
+          name: videoName,
+        }),
+      });
+
+    return await reference.getDownloadURL();
+  }
+
+  async deleteVideo({
+    docId,
+    videoName,
+    videoURL,
+  }: AmbulanceRequestRepository.DeleteVideo): Promise<void> {
+    await firestore()
+      .collection(this.collection)
+      .doc(docId)
+      .update({
+        videos: firestore.FieldValue.arrayRemove({
+          name: videoName,
+          url: videoURL,
+        }),
+      });
+
+    const reference = storage().ref("/videos/" + videoName);
+
+    await reference.delete();
+  }
 }
 
 export declare namespace RemoteAmbulanceRequest {
-  export type Model = AmbulanceRequest.Model;
+  export type Model = AmbulanceRequestRepository.Model;
 }

@@ -2,7 +2,7 @@ import React from "react";
 import { SignUpScreen } from "@presentation/screens";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { AuthenticationNavigatorParamList } from "@main/routes/authentication-navigator";
-import { makeRemoteAuthentication } from "../usecases/remote-authentication";
+import { makeAuthUseCase } from "@main/factories/usecases";
 
 export type SignUpScreenNavigationProp = StackNavigationProp<
   AuthenticationNavigatorParamList,
@@ -11,6 +11,4 @@ export type SignUpScreenNavigationProp = StackNavigationProp<
 
 export const MakeSignUpScreen: React.FC<{
   navigation: SignUpScreenNavigationProp;
-}> = ({ navigation }) => (
-  <SignUpScreen useAuthentication={makeRemoteAuthentication()} />
-);
+}> = ({ navigation }) => <SignUpScreen useAuthentication={makeAuthUseCase()} />;

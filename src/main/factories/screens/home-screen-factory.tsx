@@ -1,11 +1,13 @@
-import { MainNavigatorParamList } from "@main/routes/main-navigator";
+import { RootNavigatorParamList, MainNavigatorParamList } from "@main/routes";
 import { HomeScreen } from "@presentation/screens";
+import { BottomTabNavigationProp } from "@react-navigation/bottom-tabs";
+import { CompositeNavigationProp } from "@react-navigation/core";
 import { StackNavigationProp } from "@react-navigation/stack";
 import React from "react";
 
-export type HomeScreenNavigationProp = StackNavigationProp<
-  MainNavigatorParamList,
-  "Home"
+export type HomeScreenNavigationProp = CompositeNavigationProp<
+  BottomTabNavigationProp<MainNavigatorParamList, "Home">,
+  StackNavigationProp<RootNavigatorParamList, "Home">
 >;
 
 export const MakeHomeScreen: React.FC<{

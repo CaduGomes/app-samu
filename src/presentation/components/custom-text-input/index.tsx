@@ -29,6 +29,7 @@ export const CustomTextInput: React.FC<Props> = (props) => {
         {...inputProps}
         darkTheme={true}
         ref={props.forwardRef}
+        blurOnSubmit={false}
         customLabelStyles={{
           colorFocused: "#708090",
           leftFocused: 5,

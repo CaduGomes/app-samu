@@ -9,7 +9,7 @@ export type AuthenticationNavigatorParamList = {
 
 const Stack = createStackNavigator<AuthenticationNavigatorParamList>();
 
-export default function AuthenticationNavigator() {
+export function AuthenticationNavigator() {
   return (
     <Stack.Navigator initialRouteName="SignIn">
       <Stack.Screen

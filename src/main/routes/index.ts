@@ -1,2 +1,4 @@
-export { default as AuthenticationNavigator } from "./authentication-navigator";
-export { default as MainNavigator } from "./main-navigator";
+export * from "./authentication-navigator";
+export * from "./bottom-tab-navigator";
+export * from "./root-navigator";
+export * from "./ambulance-request-navigator";

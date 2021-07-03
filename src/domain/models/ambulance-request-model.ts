@@ -1,8 +1,13 @@
 import { FirebaseFirestoreTypes } from "@react-native-firebase/firestore";
 
 export type AmbulanceRequestModel = {
-  date: FirebaseFirestoreTypes.Timestamp;
-  images: string[];
+  createAt: FirebaseFirestoreTypes.Timestamp;
+  images: [
+    {
+      name: string;
+      url: string;
+    }
+  ];
   location: FirebaseFirestoreTypes.GeoPoint;
   isOpen: boolean;
 };

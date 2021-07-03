@@ -6,10 +6,11 @@ export default StyleSheet.create({
     justifyContent: "space-around",
     alignItems: "flex-start",
     paddingHorizontal: 40,
-    marginVertical: 50,
+    marginVertical: 20,
+    marginBottom: 20,
   },
   textContainer: {
-    height: 100,
+    height: 80,
     alignItems: "flex-start",
   },
   title: {
