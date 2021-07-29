@@ -15,9 +15,9 @@ export default StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     flexDirection: "row",
-    borderWidth: 1,
     padding: 10,
     paddingRight: 40,
+    borderWidth: 1,
     borderRadius: 8,
     backgroundColor: "#fff",
   },
@@ -29,5 +29,18 @@ export default StyleSheet.create({
     // position: "absolute"
     color: "#fff",
     fontSize: 8,
+  },
+  answersContainer: {
+    paddingVertical: 5,
+    flexDirection: "row",
+  },
+  answer: {
+    padding: 5,
+    marginRight: 10,
+    borderWidth: 1,
+    borderRadius: 8,
+  },
+  answerText: {
+    fontSize: 13,
   },
 });

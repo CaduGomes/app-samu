@@ -27,6 +27,7 @@ export default StyleSheet.create({
   },
   input: {
     paddingHorizontal: 20,
+    height: "100%",
   },
   buttonContainer: {
     justifyContent: "center",

@@ -7,4 +7,6 @@ export type MessageModel = {
   text: string;
   direction: DirectionModel;
   createdAt: FirebaseFirestoreTypes.Timestamp;
+  answers?: string[];
+  answered?: boolean;
 };

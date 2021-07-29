@@ -35,6 +35,8 @@ const RequestChatScreen: React.FC<Props> = ({ navigation, route }) => {
               createdAt: doc.data()["createdAt"],
               direction: doc.data()["direction"],
               text: doc.data()["text"],
+              answers: doc.data()["answers"],
+              answered: doc.data()["answered"],
             });
           });
           setMessages(msgs);
@@ -62,6 +64,32 @@ const RequestChatScreen: React.FC<Props> = ({ navigation, route }) => {
     setText("");
   }
 
+  async function sendFastAnswer(answer: string) {
+    console.log(answer);
+    const msg = {
+      createdAt: firestore.FieldValue.serverTimestamp(),
+      direction: "client",
+      text: answer,
+    };
+
+    await Promise.all([
+      firestore()
+        .collection<MessageModel>("AmbulanceRequest")
+        .doc(route.params.id)
+        .collection("messages")
+        .doc(messages[0].id)
+        .update({
+          answered: true,
+        }),
+
+      firestore()
+        .collection<MessageModel>("AmbulanceRequest")
+        .doc(route.params.id)
+        .collection("messages")
+        .add(msg),
+    ]);
+  }
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Você está conversando com um médico!</Text>
@@ -72,7 +100,12 @@ const RequestChatScreen: React.FC<Props> = ({ navigation, route }) => {
           data={messages}
           keyExtractor={(item) => item.id}
           renderItem={(msg) => (
-            <Message index={msg.index} key={`msg-${msg.index}`} {...msg.item} />
+            <Message
+              index={msg.index}
+              key={`msg-${msg.index}`}
+              {...msg.item}
+              fastAnswer={(text) => sendFastAnswer(text)}
+            />
           )}
         />
       </View>
@@ -81,9 +114,13 @@ const RequestChatScreen: React.FC<Props> = ({ navigation, route }) => {
           <TextInput
             placeholder="Digite uma mensagem"
             autoFocus
+            editable={messages[0]?.answers ? false : true}
             onChangeText={setText}
             value={text}
-            style={styles.input}
+            style={[
+              styles.input,
+              { backgroundColor: messages[0]?.answers ? "#aaa" : "white" },
+            ]}
           />
         </View>
         <View style={styles.buttonContainer}>
