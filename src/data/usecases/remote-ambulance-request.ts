@@ -11,14 +11,25 @@ export class RemoteAmbulanceRequest implements AmbulanceRequestRepository {
   constructor(private readonly collection: string) {}
 
   async create(): Promise<FirebaseFirestoreTypes.DocumentReference> {
-    const doc = await firestore().collection(this.collection).doc();
+    const doc = firestore().collection(this.collection).doc();
     await doc.set({
-      createAt: firestore.Timestamp.now(),
+      createAt: firestore.FieldValue.serverTimestamp(),
       isOpen: true,
       images: [],
       videos: [],
       location: new firestore.GeoPoint(0, 0),
+      state: 0,
     });
+
+    await firestore()
+      .collection(this.collection)
+      .doc(doc.id)
+      .collection("messages")
+      .add({
+        createdAt: firestore.FieldValue.serverTimestamp(),
+        direction: "admin",
+        text: "Qual a sua urgência?",
+      });
 
     firestore()
       .collection<MessageModel>("AmbulanceRequest")
