@@ -113,7 +113,6 @@ const RequestChatScreen: React.FC<Props> = ({ navigation, route }) => {
         <View style={styles.inputContainer}>
           <TextInput
             placeholder="Digite uma mensagem"
-            autoFocus
             editable={messages[0]?.answers ? false : true}
             onChangeText={setText}
             value={text}
