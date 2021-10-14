@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, TextInput, FlatList, Button, Text } from "react-native";
+import { View, TextInput, FlatList, Text } from "react-native";
 import firestore from "@react-native-firebase/firestore";
 import * as Notifications from "expo-notifications";
 
@@ -10,6 +10,7 @@ import {
 import { MessageModel } from "@domain/models";
 import { Message } from "./components";
 import styles from "./styles";
+import { CustomButton } from "@presentation/components";
 
 type Props = {
   navigation: AmbulanceRequestScreenNavigationProp;
@@ -92,7 +93,6 @@ const RequestChatScreen: React.FC<Props> = ({ navigation, route }) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Você está conversando com um médico!</Text>
       <View style={styles.messagesContainer}>
         <FlatList
           inverted
@@ -123,7 +123,7 @@ const RequestChatScreen: React.FC<Props> = ({ navigation, route }) => {
           />
         </View>
         <View style={styles.buttonContainer}>
-          <Button onPress={sendMessageHandler} title="Enviar" />
+          <CustomButton onPress={sendMessageHandler} title="Enviar" />
         </View>
       </View>
     </View>

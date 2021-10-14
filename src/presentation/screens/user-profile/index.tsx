@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { Alert, Button, Text, View } from "react-native";
+import { Alert, Text, View } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { Field, Formik } from "formik";
 
 import { AuthRepository } from "@domain/repositories";
-import { CustomTextInput, LoadingModal } from "@presentation/components";
+import {
+  CustomButton,
+  CustomTextInput,
+  LoadingModal,
+} from "@presentation/components";
 
 import styles from "./styles";
 
@@ -86,7 +90,7 @@ const UserProfileScreen: React.FC<Props> = ({ useAuthentication }) => {
                   label="Nova Senha"
                 />
                 <View style={styles.buttonContainer}>
-                  <Button
+                  <CustomButton
                     title="Atualizar"
                     onPress={() => handleSubmit()}
                     disabled={!isValid || isSubmitting}

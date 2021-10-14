@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { CustomTextInput, ErrorMessage } from "@presentation/components";
+import {
+  CustomButton,
+  CustomTextInput,
+  ErrorMessage,
+} from "@presentation/components";
 import { Field, Formik } from "formik";
-import { Button, Pressable, Text, View } from "react-native";
+import { Pressable, Text, View } from "react-native";
 import * as yup from "yup";
 
 import styles from "./styles";
-import { Authentication } from "@domain/repositories";
+import { AuthRepository } from "@domain/repositories";
 import { SignInScreenNavigationProp } from "@main/factories/screens";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
@@ -27,7 +31,7 @@ type InputValues = {
 };
 
 type Props = {
-  useAuthentication: Authentication;
+  useAuthentication: AuthRepository;
   navigation: SignInScreenNavigationProp;
 };
 
@@ -80,7 +84,7 @@ const SignInScreen: React.FC<Props> = ({ useAuthentication, navigation }) => {
                 />
                 <View style={styles.buttonContainer}>
                   <ErrorMessage show={!!signInError} text={signInError ?? ""} />
-                  <Button
+                  <CustomButton
                     title="Entrar"
                     onPress={() => handleSubmit()}
                     disabled={!isValid || isSubmitting}

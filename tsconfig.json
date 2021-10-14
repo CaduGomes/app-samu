@@ -3,13 +3,15 @@
   "compilerOptions": {
     "baseUrl": "./",
     "paths": {
-      "@data/*": ["./src/data/*", "./src/data/*/index"],
+      "@core/*": ["src/core/*", "src/core/*/index"],
+      "@data/*": ["src/data/*", "src/data/*/index"],
       "@domain/*": ["src/domain/*", "src/domain/*/index"],
       "@infra/*": ["src/infra/*", "src/main/*/index"],
       "@main/*": ["src/main/*", "src/main/*/index"],
       "@presentation/*": ["src/presentation/*", "src/presentation/*/index"],
     },
-    "strict": true
+    "strict": true,
+    "types": ["node"]
   },
   
 }

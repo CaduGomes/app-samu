@@ -1,5 +1,6 @@
 import React from "react";
-import { View, Text, Button, Modal } from "react-native";
+import { View, Text, Modal } from "react-native";
+import { CustomButton } from "@presentation/components";
 
 import styles from "./styles";
 
@@ -16,8 +17,8 @@ export const QuestionModal: React.FC<Props> = ({ show, setResponse }) => {
           O atendimento é para o dono deste celular?
         </Text>
         <View style={styles.button}>
-          <Button title="Sim" onPress={() => setResponse("sim")} />
-          <Button title="Não" onPress={() => setResponse("nao")} />
+          <CustomButton title="Sim" onPress={() => setResponse("sim")} />
+          <CustomButton title="Não" onPress={() => setResponse("nao")} />
         </View>
       </View>
     </Modal>

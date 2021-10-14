@@ -15,6 +15,7 @@ module.exports = function(api) {
             '.json',
           ],
           alias: {
+            '@core': './src/core/',
             '@data': './src/data/',
             '@domain': './src/domain/',
             '@infra': './src/infra/',

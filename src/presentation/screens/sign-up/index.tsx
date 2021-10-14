@@ -1,19 +1,17 @@
 import React, { useEffect, useState } from "react";
-import {
-  Text,
-  View,
-  Button,
-  NativeSyntheticEvent,
-  TextInputSubmitEditingEventData,
-} from "react-native";
+import { Text, View } from "react-native";
 import { cpf as CPFvalidator } from "cpf-cnpj-validator";
 
 import { Field, Formik } from "formik";
 import * as yup from "yup";
 
 import styles from "./styles";
-import { CustomTextInput, ErrorMessage } from "@presentation/components";
-import { Authentication } from "@domain/repositories";
+import {
+  CustomButton,
+  CustomTextInput,
+  ErrorMessage,
+} from "@presentation/components";
+import { AuthRepository } from "@domain/repositories";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 const fieldValidationSchema = yup.object().shape({
@@ -54,7 +52,7 @@ type InputValues = {
 };
 
 type Props = {
-  useAuthentication: Authentication;
+  useAuthentication: AuthRepository;
 };
 
 const SignUpScreen: React.FC<Props> = ({ useAuthentication }) => {
@@ -148,7 +146,7 @@ const SignUpScreen: React.FC<Props> = ({ useAuthentication }) => {
                 />
                 <View style={styles.buttonContainer}>
                   <ErrorMessage show={!!signUpError} text={signUpError ?? ""} />
-                  <Button
+                  <CustomButton
                     title="Cadastrar"
                     onPress={() => handleSubmit()}
                     disabled={!isValid || isSubmitting}

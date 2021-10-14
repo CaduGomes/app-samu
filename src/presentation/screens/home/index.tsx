@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Text, View } from "react-native";
+import { Text, View } from "react-native";
 import { HomeScreenNavigationProp } from "@main/factories/screens";
 import auth from "@react-native-firebase/auth";
 
@@ -8,6 +8,7 @@ type Props = {
 };
 
 import styles from "./styles";
+import { CustomButton } from "@presentation/components";
 
 async function signOutHandler() {
   await auth().signOut();
@@ -17,11 +18,11 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Bem vindo ao APP Samu!</Text>
-      <Button
+      <CustomButton
         title="Abrir chamado"
         onPress={() => navigation.navigate("AmbulanceRequest")}
       />
-      <Button title="Deslogar" onPress={signOutHandler} />
+      <CustomButton title="Deslogar" onPress={signOutHandler} />
     </View>
   );
 };

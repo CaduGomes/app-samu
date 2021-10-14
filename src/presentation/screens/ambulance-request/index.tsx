@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Alert, Button, Text, View } from "react-native";
+import { Alert, Text, View } from "react-native";
 import * as Location from "expo-location";
 import firestore, {
   FirebaseFirestoreTypes,
@@ -9,6 +9,7 @@ import { QuestionModal, TakePicture, RecordVideo } from "./components";
 import styles from "./styles";
 import { AmbulanceRequestRepository } from "@domain/repositories";
 import { AmbulanceRequestScreenNavigationProp } from "@main/factories/screens";
+import { CustomButton } from "@presentation/components";
 
 type Props = {
   useAmbulanceRequest: AmbulanceRequestRepository;
@@ -104,7 +105,7 @@ const AmbulanceRequestScreen: React.FC<Props> = ({
       </View>
       <View>
         <Text>Chat com um médico</Text>
-        <Button
+        <CustomButton
           title="Abrir Chat"
           onPress={() =>
             navigation.navigate("Chat", { id: firestoreDocument?.id ?? "" })
